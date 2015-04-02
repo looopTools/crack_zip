@@ -1,4 +1,4 @@
-// Made by nyx
+// Made by Lars Nielsen
 // http://www.info-zip.org/mans/unzip.html
 // http://stackoverflow.com/questions/29411929/systemcommand-returns-2304-in-c-but-why?noredirect=1#comment46997494_29411929
 
@@ -14,23 +14,32 @@
 
 int crack(char* cmd, char* pass, char* file){
 
-    int size = strlen(cmd) + strlen(pass) -1 + strlen(file) + 2;
+    int size = strlen(cmd) + strlen(pass) -1 + strlen(file) + 3;
     int result = -1;
     char* fullcmd = malloc(size);
 
+    //snprintf(fullcmd, size, "%s %s %s", cmd, pass, file);
+    //printf("%s\n", fullcmd);
     strcpy(fullcmd, cmd);
     strncat(fullcmd, " ", 1);
     strncat(fullcmd, pass, strlen(pass) -1 );
     strncat(fullcmd, " ", 1);
     strcat(fullcmd, file);
+    printf("%s\n", fullcmd);
+
     //printf("Full Command: %s\n", fullcmd);
     //result = system(fullcmd);
-    result = system(fullcmd);
+
+    //result = system(fullcmd);
+
     //printf("Result: %d\n", WEXITSTATUS(result));
-    if(WEXITSTATUS(result) == 9){
+    if( WEXITSTATUS(result) == 9){
         printf("%s not found\n", file);
         assert(0);
+    }else{
+        printf("Status: %d\n", WEXITSTATUS(result));
     }
+
     free(fullcmd);
     return result;
 }
