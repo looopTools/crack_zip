@@ -1,8 +1,13 @@
 // Made by Lars Nielsen
+//
+// This is a hobby project, please do not use
+// it for any harmfull things.
+//
 // http://www.info-zip.org/mans/unzip.html
 // http://stackoverflow.com/questions/29411929/systemcommand-returns-2304-in-c-but-why?noredirect=1#comment46997494_29411929
 
 #include <stdio.h>
+
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h> // For checking file exist
@@ -13,6 +18,7 @@
 #include <assert.h>
 
 #include <regex.h>
+
 
 int crack(char* cmd, char* pass, char* file){
 
@@ -77,6 +83,7 @@ void setup(char* cmd, char* file){
 //unzip -p password filename
 
 int main(int argc, char *argv[]){
+    regex_t reg;
     char *file = argv[1];
 
     printf("DEMO\n");
