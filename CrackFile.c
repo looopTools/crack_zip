@@ -12,6 +12,8 @@
 
 #include <assert.h>
 
+#include <regex.h>
+
 int crack(char* cmd, char* pass, char* file){
 
     int size = strlen(cmd) + strlen(pass) -1 + strlen(file) + 3;
