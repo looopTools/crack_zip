@@ -21,16 +21,15 @@ int crack(char* cmd, char* pass, char* file){
     //snprintf(fullcmd, size, "%s %s %s", cmd, pass, file);
     //printf("%s\n", fullcmd);
     strcpy(fullcmd, cmd);
-    strncat(fullcmd, " ", 1);
+    strcat(fullcmd, " ");
     strncat(fullcmd, pass, strlen(pass) -1 );
-    strncat(fullcmd, " ", 1);
+    strcat(fullcmd, " ");
     strcat(fullcmd, file);
-    printf("%s\n", fullcmd);
+    strcat(fullcmd, "\0");
+    //printf("%s\n", fullcmd);
 
     //printf("Full Command: %s\n", fullcmd);
-    //result = system(fullcmd);
-
-    //result = system(fullcmd);
+    result = system(fullcmd);
 
     //printf("Result: %d\n", WEXITSTATUS(result));
     if( WEXITSTATUS(result) == 9){
@@ -41,6 +40,7 @@ int crack(char* cmd, char* pass, char* file){
     }
 
     free(fullcmd);
+    //printf("return code: %d\n:", result);
     return result;
 }
 
@@ -51,18 +51,17 @@ void setup(char* cmd, char* file){
     FILE* fp;
     char* pass = NULL;
     size_t len = 0;
-    ssize_t read;
+    size_t read;
 
-    fp = fopen("passwords.txt", "r");
+    fp  = fopen("passwords.txt", "r");
     if(fp == NULL){
         exit(EXIT_FAILURE);
     }
 
     while((read = getline(&pass, &len, fp)) != -1){
-        printf("trying password: %s\n", pass);
-        if(crack(cmd, pass, file) != -1){
-            printf("FILE cracked\n");
-            //break;
+        if(crack(cmd, pass, file) == 0){
+            printf("FILE cracked - password: %s\n", pass);
+            break;
         }
 
     }
@@ -78,11 +77,12 @@ void setup(char* cmd, char* file){
 int main(int argc, char *argv[]){
     char *file = argv[1];
 
+    printf("DEMO\n");
     if(access(file, F_OK) == -1){
         printf("Something went wrong \n");
         exit(EXIT_FAILURE);
     }
-    setup("unzip -p", file);
+    setup("unzip  -o -P", file);
 
     exit(EXIT_SUCCESS);
 }
